@@ -1,3 +1,3 @@
 module github.com/theantichris/habitica-cli
 
-go 1.21.0
+go 1.21

@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/theantichris/habitica-cli/cmd"
+)
 
 func main() {
-	fmt.Println("Hello, world!")
+	cmd.Execute()
 }

@@ -25,6 +25,10 @@ var versionCmd = &cobra.Command{
 	},
 }
 
+func init() {
+	rootCmd.AddCommand(versionCmd)
+}
+
 func Execute() {
 	err := rootCmd.Execute()
 
@@ -32,8 +36,4 @@ func Execute() {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-}
-
-func init() {
-	rootCmd.AddCommand(versionCmd)
 }

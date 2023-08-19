@@ -12,7 +12,7 @@ var rootCmd = &cobra.Command{
 	Short: "hcli is a CLI for Habitica.",
 	Long:  "Learn more about Habitica at https://habitica.com.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hello, world!")
+		versionCmd.Run(cmd, args)
 	},
 }
 

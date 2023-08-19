@@ -8,40 +8,38 @@ import (
 
 var old, w *os.File
 
-func Test_Root(t *testing.T) {
-	t.Run("test Execute", func(t *testing.T) {
-		r := setUp()
-		defer cleanUp()
+func Test_Execute(t *testing.T) {
+	r := setUp()
+	defer cleanUp()
 
-		Execute()
+	Execute()
 
-		out := make([]byte, 100)
-		n, _ := r.Read(out)
+	out := make([]byte, 100)
+	n, _ := r.Read(out)
 
-		expected := "hcli v0"
-		actual := strings.TrimSpace(string(out[:n]))
+	expected := "hcli v0"
+	actual := strings.TrimSpace(string(out[:n]))
 
-		if actual != expected {
-			t.Errorf("expected '%s' but got '%s'", expected, actual)
-		}
-	})
+	if actual != expected {
+		t.Errorf("expected '%s' but got '%s'", expected, actual)
+	}
+}
 
-	t.Run("test version", func(t *testing.T) {
-		r := setUp()
-		defer cleanUp()
+func Test_versionCmd(t *testing.T) {
+	r := setUp()
+	defer cleanUp()
 
-		versionCmd.Execute()
+	versionCmd.Execute()
 
-		out := make([]byte, 100)
-		n, _ := r.Read(out)
+	out := make([]byte, 100)
+	n, _ := r.Read(out)
 
-		expected := "hcli v0"
-		actual := strings.TrimSpace(string(out[:n]))
+	expected := "hcli v0"
+	actual := strings.TrimSpace(string(out[:n]))
 
-		if actual != expected {
-			t.Errorf("expected '%s' but got '%s'", expected, actual)
-		}
-	})
+	if actual != expected {
+		t.Errorf("expected '%s' but got '%s'", expected, actual)
+	}
 }
 
 func setUp() *os.File {

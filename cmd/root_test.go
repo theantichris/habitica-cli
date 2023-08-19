@@ -6,12 +6,13 @@ import (
 	"testing"
 )
 
-func Test_Root(t *testing.T) {
-	old := os.Stdout
-	r, w, _ := os.Pipe()
-	os.Stdout = w
+var old, w *os.File
 
+func Test_Root(t *testing.T) {
 	t.Run("test Execute", func(t *testing.T) {
+		r := setUp()
+		defer cleanUp()
+
 		Execute()
 
 		out := make([]byte, 100)
@@ -26,6 +27,9 @@ func Test_Root(t *testing.T) {
 	})
 
 	t.Run("test version", func(t *testing.T) {
+		r := setUp()
+		defer cleanUp()
+
 		versionCmd.Execute()
 
 		out := make([]byte, 100)
@@ -38,7 +42,17 @@ func Test_Root(t *testing.T) {
 			t.Errorf("expected '%s' but got '%s'", expected, actual)
 		}
 	})
+}
 
+func setUp() *os.File {
+	old = os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+
+	return r
+}
+
+func cleanUp() {
 	w.Close()
 	os.Stdout = old
 }

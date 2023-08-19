@@ -7,8 +7,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var authorId string = "cf3a800e-4359-402c-90bc-e9d87ee78379"
-var scriptName string = "hcli"
+const authorId = "cf3a800e-4359-402c-90bc-e9d87ee78379"
+const scriptName = "hcli"
 
 var rootCmd = &cobra.Command{
 	Use:   "hcli",

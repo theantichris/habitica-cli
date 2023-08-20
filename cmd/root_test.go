@@ -15,7 +15,21 @@ func Test_rootCmd(t *testing.T) {
 	expected := welcomeString
 	actual := strings.Trim(welcomeString, " ")
 
-	if actual != expected {
-		t.Errorf("Expected: '%s', but got: '%s'", expected, actual)
+	if expected != actual {
+		t.Errorf("Expected '%s' but got '%s'", expected, actual)
+	}
+}
+
+func Test_versionCmd(t *testing.T) {
+	buf := new(bytes.Buffer)
+	versionCmd.SetOut(buf)
+
+	versionCmd.Execute()
+
+	expected := versionString
+	actual := strings.Trim(versionString, " ")
+
+	if expected != actual {
+		t.Errorf("Expected '%s' but got '%s'", expected, actual)
 	}
 }

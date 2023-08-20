@@ -4,16 +4,20 @@ import (
 	"bytes"
 	"strings"
 	"testing"
+
+	"github.com/spf13/cobra"
 )
 
 func Test_rootCmd(t *testing.T) {
-	buf := new(bytes.Buffer)
-	rootCmd.SetOut(buf)
+	root := &cobra.Command{Use: "root", Run: rootCmd.Run}
 
-	rootCmd.Execute()
+	buffer := new(bytes.Buffer)
+	root.SetOut(buffer)
+
+	root.Execute()
 
 	expected := welcomeString
-	actual := strings.Trim(welcomeString, " ")
+	actual := strings.TrimSpace(welcomeString)
 
 	if expected != actual {
 		t.Errorf("Expected '%s' but got '%s'", expected, actual)
@@ -21,13 +25,15 @@ func Test_rootCmd(t *testing.T) {
 }
 
 func Test_versionCmd(t *testing.T) {
-	buf := new(bytes.Buffer)
-	versionCmd.SetOut(buf)
+	version := &cobra.Command{Use: "version", Run: versionCmd.Run}
 
-	versionCmd.Execute()
+	buffer := new(bytes.Buffer)
+	version.SetOut(buffer)
+
+	version.Execute()
 
 	expected := versionString
-	actual := strings.Trim(versionString, " ")
+	actual := strings.TrimSpace(versionString)
 
 	if expected != actual {
 		t.Errorf("Expected '%s' but got '%s'", expected, actual)

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/theantichris/habitica-cli/cmd/habitica"
 )
 
 const welcomeString = "Thank you for using hcli."
@@ -26,7 +27,11 @@ var versionCmd = &cobra.Command{
 }
 
 func init() {
+	rootCmd.PersistentFlags().String("apiToken", "", "You API token")
+
 	rootCmd.AddCommand(versionCmd)
+
+	rootCmd.AddCommand(habitica.StatusCmd)
 }
 
 func Execute() {

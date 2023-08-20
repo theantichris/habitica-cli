@@ -20,3 +20,6 @@ habitica-cli
 
 # Go workspace file
 go.work
+
+# Environment
+.env

@@ -9,7 +9,7 @@ import (
 )
 
 func Test_statusCmd(t *testing.T) {
-	status := &cobra.Command{Use: "status", Run: statusCmd.Run}
+	status := &cobra.Command{Use: "status", Run: StatusCmd.Run}
 
 	buffer := new(bytes.Buffer)
 	status.SetOut(buffer)

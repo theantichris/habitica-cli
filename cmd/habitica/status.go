@@ -2,9 +2,11 @@ package habitica
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"net/http"
 
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -28,31 +30,51 @@ var StatusCmd = &cobra.Command{
 
 			url := "https://habitica.com/api/v3/status"
 			data := []byte("")
-			request, err := http.NewRequest("GET", url, bytes.NewBuffer(data))
+
+			requester := HabiticaWebRequester{}
+			body, err := requester.MakeRequest("GET", url, data, apiToken)
 			if err != nil {
-				cmd.PrintErrf("Error creating request: %t", err)
+				cmd.PrintErr(err)
 			}
 
-			request.Header.Set("x-client", authorId+"-"+scriptName)
-			request.Header.Set("x-api-user", authorId)
-			request.Header.Set("x-api-key", apiToken)
-			request.Header.Set("content-type", "application/json")
-
-			client := &http.Client{}
-			response, err := client.Do(request)
-			if err != nil {
-				cmd.PrintErrf("API request err: %t", err)
-			}
-			defer response.Body.Close()
-
-			body, err := io.ReadAll(response.Body)
-			if err != nil {
-				cmd.PrintErrf("Error reading body: %t", err)
-			}
-
+			// {"success":true,"data":{"status":"up"},"appVersion":"5.1.4"}
 			cmd.Println(string(body))
 		}
 
 		// TODO: handle no API key
 	},
+}
+
+type WebRequester interface {
+	MakeRequest(url string) (string, error)
+}
+
+type HabiticaWebRequester struct{}
+
+func (r HabiticaWebRequester) MakeRequest(method string, url string, data []byte, apiToken string) (string, error) {
+	request, err := http.NewRequest(method, url, bytes.NewBuffer(data))
+	if err != nil {
+		return "", errors.Wrap(err, "Error creating request: %t")
+	}
+
+	request.Header.Set("x-client", authorId+"-"+scriptName)
+	request.Header.Set("x-api-user", authorId)
+	request.Header.Set("x-api-key", apiToken)
+	request.Header.Set("content-type", "application/json")
+
+	client := &http.Client{}
+	response, err := client.Do(request)
+	if err != nil {
+		return "", errors.Wrap(err, "API request err: %t")
+	}
+	defer response.Body.Close()
+
+	fmt.Printf("Status code: %d\n", response.StatusCode)
+
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return "", errors.Wrap(err, "Error reading body: %t")
+	}
+
+	return string(body), nil
 }

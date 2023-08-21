@@ -13,8 +13,6 @@ import (
 const authorId = "cf3a800e-4359-402c-90bc-e9d87ee78379"
 const scriptName = "hcli"
 
-const statusOkString = "status: ok"
-
 // StatusCmd checks the status of the Habitica API, it returns 'status: ok'
 // if it is up.
 // hcli status --apiToken butts
